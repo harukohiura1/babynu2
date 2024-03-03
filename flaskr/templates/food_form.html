@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <meta>
+        <meta charset="UTF-8">
+        <title>離乳食の栄養価計算アプリ</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <h1>新規食材の追加</h1>
+        <form method="post" action="{{ url_for('food_form_register') }}">
+            <table border="1">
+                <tr>
+                    <th>食材名</th>
+                    <th>たんぱく質</th>
+                    <th>脂質</th>
+                    <th>炭水化物</th>
+                </tr>
+                <tr>
+                    <td><input type="text" name="food_name"></td>
+                    <td><input type="number" name="protein"></td>
+                    <td><input type="number" name="fat"></td>
+                    <td><input type="number" name="carbohydrate"></td>
+                </tr>
+            </table>
+            <br>
+            <input type="submit" value="登録">
+        </form>
+    </body>
+</html>

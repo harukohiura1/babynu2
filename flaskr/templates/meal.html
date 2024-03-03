@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <meta>
+        <meta charset="UTF-8">
+        <title>離乳食の栄養価計算アプリ</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body>
+        <h1>食事の栄養価計算</h1>
+        <h2>料理リスト</h2>
+        {% if name_list == [] %}
+            <p>食事を登録しましょう</p>
+        {% else %}
+            <ul>
+                {% for dish_id, dish_name in combined_list %}
+                    <li><a href="{{ url_for('dish', dish_id=dish_id) }}">{{ dish_name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <meta>
+        <meta charset="UTF-8">
+        <title>離乳食の栄養価計算アプリ</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <script>
+            'use strict';
+
+            // const myBlog = {
+            //     title: 'JavaScriptがんばるぞブログ',
+            //     author: 'web太郎',
+            //     addPost: () => {
+            //         console.log('記事を投稿したよ');
+            //     },
+            //     deletePost: () => {
+            //         console.log('記事を削除したよ');
+            //     }
+            // }
+            // console.log(myBlog.title);
+            // myBlog.addPost();
+
+            // console.log();
+            // alert();
+            // window.alert();
+        
+            // document.getElementById();
+            // document.getElementsByClassName();
+
+            // const btn01 = document.getElementById('btn01');
+            // console.log(btn01);
+
+            // const btn = document.getElementsByClassName('btn');
+            // console.log(btn);
+
+            // const btn01 = document.getElementById('btn01');
+            // btn01.addEventListener('click', function() {
+            //     console.log(this);
+            // });
+
+            // const btn01 = document.getElementById('btn01');
+            // btn01.addEventListener('click', function() {
+            //     // this.classList.add('clicked');
+            //     this.classList.toggle('clicked');
+            // });
+
+            const btn = document.getElementsByClassName('btn');
+            for(let i = 0; i < btn.length; i++){
+                btn[i].addEventListener('click', function() {
+                    this.classList.toggle('clicked');
+                });
+            }
+
+            // function myAlert(greeting = 'おはよう', name) {
+            //     alert(greeting);
+            //     alert(name + 'さん');
+            // }
+            // myAlert('こんにちは', '佐藤');
+
+            // aとbを足して3にする関数
+            // function myCalc(a, b) {
+            //     console.log(a + b);
+            //     return(a + b);
+            // }
+            // alert(myCalc(1, 2));
+
+            // const myCalc = function( {
+            //     return a + b;
+            // }
+            // alert(myCalc(1, 2));
+
+            // //従来の無名関数（関数式）
+            // const myAlert = function(message) {
+            //     alert(message);
+            // }
+            // myAlert('こんにちは');
+
+            // //アロー関数（省略前）
+            // const myAlert = () => {
+            //     alert(message);
+            // }
+            // myAlert('こんにちは');
+
+            // //アロー関数（省略後）
+            // const myAlert = message => alert(message);
+            // myAlert('こんにちは');
+
+            // //従来の無名関数（関数式）
+            // const myCalc = function(a) {
+            //     return a * a;
+            // }
+            // alert(myCalc(2)); //2 * 2 = 4
+
+            // //アロー関数（省略前）
+            // const myCalc = (a) => {
+            //     return a * a;
+            // }
+            // alert(myCalc(2));
+
+            // //アロー関数（省略後）
+            // const myCalc = a => a * a;
+            // alert(myCalc(2));
+        </script> 
+
+        <input id="btn" type="button" value="外部データを取得する">
+    
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            //XMLHttpRequestオブジェクトの作成:
+            var xhr = new XMLHttpRequest();
+
+            //リクエストの準備:
+            xhr.open('GET', 'example.com/api/data', true); // メソッドとエンドポイントを指定
+
+            //リクエストの送信:
+            xhr.send();
+
+            //レスポンスの処理:
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    if (xhr.status == 200) {
+                        // レスポンスを処理するためのコード
+                        console.log(xhr.responseText);
+                    } else {
+                        // エラーハンドリング
+                        console.error('Request failed: ' + xhr.status);
+                    }
+                }
+            };
+        </script>
+    </body>
+</html>

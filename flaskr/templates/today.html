@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <meta>
+        <meta charset="UTF-8">
+        <title>離乳食栄養価計算アプリ</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body>
+        <h1>離乳食の栄養価計算</h1>
+        {% include 'radar_chart.html' %}
+        
+        {% if foods == [] %}
+            <p>食材を登録しよう</p>
+        {% else %}
+            <table border="1">
+                <tr>
+                    <th>ID</th>
+                    <th>食材名</th>
+                    <th>たんぱく質</th>
+                    <th>脂質</th>
+                    <th>炭水化物</th>
+                </tr>
+                {%  for food in foods %}
+                    <tr>
+                        <td>{{ food.id }}</td>
+                        <td>{{ food.name }}</td>
+                        <td>{{ food.protein }}</td>
+                        <td>{{ food.fat }}</td>
+                        <td>{{ food.carbohydrate }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+        <a href="{{ url_for('food_form') }}">新しい食材を登録する</a>
+        <br>
+        <a href="{{ url_for('dish_form') }}">新しい料理を登録する</a>
+    </body>
+</html>

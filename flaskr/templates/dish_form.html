@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <meta>
+        <meta charset="UTF-8">
+        <title>離乳食の栄養価計算アプリ</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1>料理を記録する</h1>
+        <form method="post" action="{{ url_for('dish_form_register') }}">
+            <div>
+                <input type="text" name="dish_name" placeholder="料理名">
+            </div>
+            <div id="ingredients">
+                <div>食材</div>
+                {% for _ in range(5) %}
+                    <div class="ingredient">
+                        <div style="display: inline-block;">
+                            <input type="text" name="food_names[]" class="searchInput" placeholder="Search...">
+                            <ul class="searchResults" style="margin: 0;"></ul>
+                        </div>
+                        <div style="display: inline-block">
+                            <input type="number" name="quantities[]" style="width: 50px">g
+                        </div>
+                    </div>
+                {% endfor %}
+                <div id="addIngredient">
+                    <button type="button">欄を追加</button>
+                </div>
+            </div>
+            <input type="submit" value="記録する">
+        </form>
+        <a href="{{ url_for('today') }}">todayに戻る</a>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                // インプットに入力があるたびに検索を行う処理
+                function searchInputHandler() {
+                    var keyword = $(this).val().trim();
+                    var $parentUl = $(this).closest('div').find('.searchResults');
+                    
+                    // 入力が空の場合
+                    if (keyword === '') {
+                        $parentUl.empty().hide(); // ULを空にして非表示にする
+                        return;
+                    }
+
+                    // 入力がある場合は、サーバーにキーワードを送信して候補を取得
+                    $.ajax({
+                        url: '/dish_form_suggest',
+                        type: 'GET',
+                        data: { keyword: keyword },
+                        success: function(data) {
+                            $parentUl.empty(); // 見つけたULを空にする
+                            data.forEach(function(item) {
+                                // food_idをhiddenで保持し、food_nameをvalueとして<li>に入れる
+                                $parentUl.append('<li><input type="hidden" name="food_ids[]" class="foodId" value="' + item.food_id + '">' + item.food_name + '</li>'); 
+                            });
+                            $parentUl.show();
+                        }
+                    });
+                }
+
+                // LI要素がクリックされたときの処理
+                function liClickHandler() {
+                    var $inputField = $(this).find('.foodId');
+                    var value = $inputField.val(); // クリックされた<li>内のfoodIdを取得
+                    var foodName = $(this).text(); // food_nameを取得
+                    var $parentDiv = $(this).closest('div'); // 親要素から<div>を見つける
+                    var $inputField = $parentDiv.find('.searchInput'); // 見つけた<div>から対応する<input>を見つける
+                    $inputField.val(foodName); // 対応する<input>にfood_nameを設定
+                    $('.searchResults').hide();
+                }
+
+                // 「欄を追加」ボタンがクリックされたときの処理
+                $('#addIngredient').click(function() {
+                    var ingredientsDiv = $('#ingredients'); // 食材入力欄の要素を取得
+                    var ingredientTemplate = $('.ingredient').eq(0).clone(); // 最初の食材入力欄の要素を複製して新しい食材入力欄を作成
+                    ingredientTemplate.find('.searchInput').on('input', searchInputHandler); // 新しい<input>要素にイベントハンドラを追加
+                    ingredientTemplate.find('.searchResults').on('click', 'li', liClickHandler); // 新しい<li>要素にイベントハンドラを追加
+                    ingredientTemplate.insertBefore($(this)); // クリックされた要素の直前に挿入する
+                });
+
+                // 既存の<input>要素にイベントハンドラを追加
+                $('.searchInput').on('input', searchInputHandler);
+                $('.searchResults').on('click', 'li', liClickHandler);
+
+                // フォームが送信される前に空の値を持つ入力フィールドの親要素を削除
+                $('form').submit(removeEmptyInputs);
+            });
+        </script>       
+    </body>
+</html>

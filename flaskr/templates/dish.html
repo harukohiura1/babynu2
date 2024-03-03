@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <meta>
+        <meta charset="UTF-8">
+        <title>離乳食の栄養価計算アプリ</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body>
+        <h1>料理の栄養価計算</h1>
+
+        <h2>{{ title }}</h2>
+        <div class="radar_chart">
+            <canvas id="barChart" width="400" height="400"></canvas>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Flaskから受け取ったデータ
+                var dataFromFlask = {{ values | tojson }};
+                
+                // Canvas要素の取得
+                var ctx = document.getElementById('barChart').getContext('2d');
+
+                // Chart.jsで棒グラフを描画
+                var barChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: {{ labels | tojson }},  // ラベル
+                        datasets: [{
+                            label: {{ title | tojson }},  // データセットのラベル
+                            data: dataFromFlask,  // Flaskから受け取ったデータ
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',  // 棒の色
+                            borderColor: 'rgba(255, 99, 132, 1)',  // 枠線の色
+                            borderWidth: 1  // 枠線の幅
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                min: 0,  // Y軸の最小値
+                                max: 100,  // Y軸の最大値
+                                ticks: {
+                                    stepSize: 10  // 目盛りの間隔
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+        
+        <h2>食材リスト</h2>
+        {% if ingredients == [] %}
+            <p>食材を登録しましょう</p>
+        {% else %}
+            <ul>
+                {% for ingredient in ingredients %}
+                    <li>{{ ingredient }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </body>
+</html>

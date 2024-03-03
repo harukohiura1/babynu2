@@ -1,0 +1,32 @@
+
+<h2>{{ title }}</h2>
+<div class="radar_chart">
+    <canvas id="radarChart" width="400" height="400"></canvas>
+</div>
+<script>
+    var ctx = document.getElementById('radarChart').getContext('2d');
+    var myRadarChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: {{ labels | tojson }},
+            datasets: [{
+                label: {{ title | tojson }},
+                data: {{ values | tojson }},
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scale: {
+                angleLines: {
+                    display: false
+                },
+                ticks: {
+                    suggestedMin: 0,
+                    suggestedMax: 100
+                }
+            }
+        }
+    });
+</script>
